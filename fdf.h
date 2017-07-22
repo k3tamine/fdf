@@ -6,7 +6,7 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 02:07:16 by mgonon            #+#    #+#             */
-/*   Updated: 2017/07/21 02:44:00 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/07/23 00:23:57 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <math.h>
 # include "minilibx/mlx.h"
 # include "libft/libft.h"
 // # define WIDTH  2560
@@ -37,6 +38,8 @@ typedef struct	s_param
 {
 	void			*mlx;
 	void			*win;
+	void			*img_ptr;
+	char    		*img_str;
 	int				x_min;
 	int				y_min;
 	int				x_max;
@@ -53,8 +56,13 @@ typedef struct	s_param
 	int				bits_pp;
 	int				size_line;
 	int				endian;
-	char    		*my_img_str;
-	void			*img_ptr;
+	int				red;
+	int				green;
+	int				blue;
+	int				alpha;
+	int				space;
+	struct	s_point	*map;
+	float			deg;
 }				t_param;
 
 typedef struct	s_point
