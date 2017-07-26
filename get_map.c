@@ -6,12 +6,11 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 03:23:44 by mgonon            #+#    #+#             */
-/*   Updated: 2017/07/20 20:10:26 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/07/26 02:27:12 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
 
 static int		connect_point(t_point *map)
 {
@@ -33,41 +32,24 @@ static int		connect_point(t_point *map)
 	return (1);
 }
 
-
-static int		get_z(char *str, int *i)
+static t_point	*new_point(char *str, int *i, int x, int y)
 {
-	int		n;
-	int		z;
+	t_point		*point;
+	int			n;
+	int			z;
 
 	str += *i;
 	n = 0;
-	if (str[n] == '-')
-		n++;
-	if (!ft_isdigit(str[n]))
-		printf("ERROR\n");
 	z = ft_atoi(str);
-	while (ft_isdigit(str[n]))
+	while (str[n] != ' ' && str[n])
 		n++;
 	*i += n;
-	return (z);
-}
-
-static t_point	*new_point(char *str, int *i, int x, int y)
-{
-	t_point		*output;
-	int			z;
-
-	z = get_z(str, i);
-	// z = ft_atoi(str);
-	if (!(output = (t_point*)ft_memalloc(sizeof(t_point))))
-		printf("ERROR\n");
-	output->x = x;
-	output->y = y;
-	output->z = z;
-	// printf("x = %d\n", x);
-	// printf("y = %d\n", y);
-	// printf("z = %d\n", z);
-	return (output);
+	if (!(point = (t_point*)ft_memalloc(sizeof(t_point))))
+		printf("ERROR LA\n");
+	point->x = x;
+	point->y = y;
+	point->z = z;
+	return (point);
 }
 
 static int		read_line(t_point **point, char *str, int y)
@@ -89,14 +71,12 @@ static int		read_line(t_point **point, char *str, int y)
 			point = &((*point)->right);
 			x++;
 		}
-		// printf("point->x = %d\n", (*point)->x);
 	}
 	return (1);
 }
 
 static void		parse_map(int fd, t_point **point)
 {
-	// 0,82 pour l'iso???
 	char	*str;
 	int		y;
 
@@ -104,12 +84,11 @@ static void		parse_map(int fd, t_point **point)
 	while (get_next_line(fd, &str) == 1)
 	{
 		read_line(point, str, y);
-		// printf("point->x = %d\n", (*point)->x);
 		point = &((*point)->down);
 		y++;
 	}
 	if (!y)
-		printf("ERROR\n");
+		printf("ERROR ICI\n");
 }
 
 t_point			*get_map(int fd)
