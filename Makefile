@@ -6,33 +6,38 @@
 #    By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/29 00:04:18 by mgonon            #+#    #+#              #
-#    Updated: 2017/07/21 01:29:27 by mgonon           ###   ########.fr        #
+#    Updated: 2017/08/01 16:30:40 by mgonon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
-OPTION = -c
+# SRCS_NAME 	= 	main.c get_map.c display_map.c
+# SRCS_PATH 	= 	srcs/
+# SRCS 		= 	$(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
-SRC = main.c get_map.c display_map.c
+# OBJS_NAME	= 	$(SRCS_NAME:.c=.o)
+# OBJS_PATH	=	objs/
+# OBJS		=	$(addprefix $(OBJS_PATH), $(OBJS_NAME))
 
-OBJ = $(SRC:.c=.o)
+SRCS = main.c get_map.c display_map.c
+OBJS = $(SRCS:.c=.o)
 
 FLAGS = -Werror -Wall -Wextra
 
-FRAWK = -lmlx -framework OpenGL -framework AppKit
+FRAWK = -framework OpenGL -framework AppKit
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJS)
 	make -C minilibx/
 	make -C libft/
-	gcc $(FLAGS) -o $(NAME) $(OBJ) -L libft -lft -L minilibx $(FRAWK)
+	gcc $(FLAGS) -o $(NAME) $(OBJS) -Llibft -lft -Lminilibx -lmlx $(FRAWK)	
 
 clean:
 	make -C minilibx/ clean
 	make -C libft/ clean
-	/bin/rm -f $(OBJ)
+	/bin/rm -f $(OBJS)
 
 fclean: clean
 	make -C libft/ fclean

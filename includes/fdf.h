@@ -6,7 +6,7 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 02:07:16 by mgonon            #+#    #+#             */
-/*   Updated: 2017/07/26 01:46:01 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/01 16:16:02 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <math.h>
-# include "minilibx/mlx.h"
-# include "libft/libft.h"
+# include "../minilibx/mlx.h"
+# include "../libft/libft.h"
 # define WIDTH  1240
 # define HEIGHT 670
 # define ECHAP	53
@@ -32,6 +32,8 @@
 # define R		15
 # define A		0
 # define S		1
+# define D		2
+# define F		3
 
 typedef struct	s_point
 {
@@ -49,9 +51,6 @@ typedef struct	s_param
 	void			*img_ptr;
 	char			*img_str;
 	t_point			*map;
-	int				red;
-	int				green;
-	int				blue;
 	int				counter;
 	int				e;
 	int				sx;
@@ -59,13 +58,15 @@ typedef struct	s_param
 	int				bpp;
 	int				size_line;
 	int				endian;
-	int				alpha;
 	int				space;
 	int				x_move;
 	int				y_move;
+	// int				z_move;
+	int				color;
 	float			deg;
 }				t_param;
 t_point			*get_map(int fd);
 int				display_map(t_point *point);
+int				error_handler(char *err_str);
 
 #endif

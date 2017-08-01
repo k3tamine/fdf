@@ -6,11 +6,11 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/29 00:22:27 by mgonon            #+#    #+#             */
-/*   Updated: 2017/07/26 02:26:32 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/01 16:30:08 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "includes/fdf.h"
 
 //POUR ROTATION
 //X = x0*cos(a) - y0*sin(a)
@@ -21,21 +21,21 @@
 // POUR TONTON
 // DECLARATION DE params COMME ACTUELLEMENT OU MALLOC???
 
+int	error_handler(char *err_str)
+{
+	ft_putendl_fd(err_str, 2);
+	exit(EXIT_FAILURE);
+}
+
 int	main(int ac, char **av)
 {
 	int		fd;
 	t_point	*map;
 
 	if (ac != 2)
-	{
-		printf("ERROR nb params\n");
-		return (1);
-	}
+		error_handler("2 arguments expected\nUsage : ./fdf <filename>");
 	if ((fd = open(av[1], O_RDONLY)) < 0)
-	{
-		printf("ERROR fail open\n");
-		return (2);
-	}
+		error_handler("Error : Can't open file");
 	map = get_map(fd);
 	display_map(map);
 	close(fd);

@@ -6,38 +6,44 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/19 17:16:59 by mgonon            #+#    #+#             */
-/*   Updated: 2017/07/26 02:29:29 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/01 16:29:37 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "includes/fdf.h"
 
 static void		init_params(t_param *params)
 {
 	params->space = WIDTH / 150;
 	params->deg = 0.5;
-	params->alpha = 0;
 	params->x_move = 0;
 	params->y_move = 0;
+	// params->z_move = 0;
+	params->color = 0x00f23452;
 	params->img_ptr = NULL;
 }
 
 static void		fill_pixel(int x, int y, int color, t_param *params)
 {
 	int	pos;
+	int	red;
+	int	green;
+	int	blue;
+	int	alpha;
 
-	params->red = (color & 0x00ff0000) >> 16;
-	params->green = (color & 0x0000ff00) >> 8;
-	params->blue = (color & 0x000000ff);
+	red = (color & 0x00ff0000) >> 16;
+	green = (color & 0x0000ff00) >> 8;
+	blue = (color & 0x000000ff);
+	alpha = 0;
 	if (y > 0 && y < WIDTH)
 	{
 		pos = y * WIDTH * 4 + x * 4;
 		if (pos > 0 && pos < (HEIGHT * WIDTH * 4))
 		{
-			params->img_str[pos] = params->blue;
-			params->img_str[pos + 1] = params->green;
-			params->img_str[pos + 2] = params->red;
-			params->img_str[pos + 3] = params->alpha;
+			params->img_str[pos] = blue;
+			params->img_str[pos + 1] = green;
+			params->img_str[pos + 2] = red;
+			params->img_str[pos + 3] = alpha;
 		}
 	}
 }
@@ -101,10 +107,10 @@ static void		fill_image(t_param *params, t_point *map)
 			p1 = calculate_iso(*params, *map);
 			p2 = calculate_iso(*params, *(map)->right);
 			if (map->right->right)
-				link_2points(params, p1, p2, 0x000080BB);
+				link_2points(params, p1, p2, params->color);
 			p2 = calculate_iso(*params, *(map)->down);
 			if (map->down->down)
-				link_2points(params, p1, p2, 0x000080BB);
+				link_2points(params, p1, p2, params->color);
 			map = map->right;
 		}
 		map = first->down;
@@ -127,15 +133,15 @@ static void		handle_image(t_param *params)
 static int		key_hook(int keycode, t_param *params)
 {
 	if (keycode == ECHAP)
-		exit(0);
+		exit(EXIT_SUCCESS);
 	else if (keycode == Q)
 		params->deg += 0.1;
 	else if (keycode == A)
 		params->deg -= 0.1;
 	else if (keycode == W)
-		params->space += WIDTH / 350;
+		params->space += WIDTH / 1000;
 	else if (keycode == S)
-		params->space -= WIDTH / 350;
+		params->space -= WIDTH / 1000;
 	else if (keycode == LEFT)
 		params->x_move -= 100;
 	else if (keycode == RIGHT)
@@ -144,8 +150,14 @@ static int		key_hook(int keycode, t_param *params)
 		params->y_move -= 100;
 	else if (keycode == DOWN)
 		params->y_move += 100;
+	else if (keycode == E)
+		params->color += 30;
+	// else if (keycode == R)
+	// 	params->z_move += 1;
+	// else if (keycode == F)
+	// 	params->z_move -= 1;
 	handle_image(params);
-	printf("key = %d\n", keycode);
+	// printf("keycode = %d\n", keycode);
 	return (0);
 }
 

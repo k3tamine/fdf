@@ -6,11 +6,11 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 03:23:44 by mgonon            #+#    #+#             */
-/*   Updated: 2017/07/26 02:27:12 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/01 16:29:40 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "includes/fdf.h"
 
 static int		connect_point(t_point *map)
 {
@@ -45,7 +45,7 @@ static t_point	*new_point(char *str, int *i, int x, int y)
 		n++;
 	*i += n;
 	if (!(point = (t_point*)ft_memalloc(sizeof(t_point))))
-		printf("ERROR LA\n");
+		error_handler("Error : Malloc failed, not enough space?");
 	point->x = x;
 	point->y = y;
 	point->z = z;
@@ -88,7 +88,7 @@ static void		parse_map(int fd, t_point **point)
 		y++;
 	}
 	if (!y)
-		printf("ERROR ICI\n");
+		error_handler("Error : File is empty");
 }
 
 t_point			*get_map(int fd)
