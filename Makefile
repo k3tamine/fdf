@@ -6,19 +6,11 @@
 #    By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/29 00:04:18 by mgonon            #+#    #+#              #
-#    Updated: 2017/08/02 12:44:01 by mgonon           ###   ########.fr        #
+#    Updated: 2017/08/02 13:08:40 by mgonon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
-
-# SRCS_NAME 	= 	main.c get_map.c display_map.c
-# SRCS_PATH 	= 	srcs/
-# SRCS 		= 	$(addprefix $(SRCS_PATH), $(SRCS_NAME))
-
-# OBJS_NAME	= 	$(SRCS_NAME:.c=.o)
-# OBJS_PATH	=	objs/
-# OBJS		=	$(addprefix $(OBJS_PATH), $(OBJS_NAME))
 
 SRCS = main.c get_map.c display_map.c handle_img.c
 OBJS = $(addprefix srcs/, $(SRCS:.c=.o))
