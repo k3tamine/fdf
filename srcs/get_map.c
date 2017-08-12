@@ -6,7 +6,7 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 03:23:44 by mgonon            #+#    #+#             */
-/*   Updated: 2017/08/02 12:39:21 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/12 15:05:17 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_point	*new_point(char *str, int *i, int x, int y)
 	while (str[n] != ' ' && str[n])
 		n++;
 	*i += n;
-	if (!(point = (t_point*)ft_memalloc(sizeof(t_point))))
+	if (!(point = (t_point *)ft_memalloc(sizeof(t_point))))
 		handle_error("Error : Malloc failed, not enough space?");
 	point->x = x;
 	point->y = y;
@@ -65,12 +65,14 @@ static int		read_line(t_point **point, char *str, int y)
 	{
 		if (str[i] == ' ')
 			i++;
-		else if (str[i])
+		else if (ft_isdigit(str[i]) || str[i] == '-' || str[i] == '+')
 		{
 			*point = new_point(str, &i, x, y);
 			point = &((*point)->right);
 			x++;
 		}
+		else
+			handle_error("Error : Invalid map");
 	}
 	return (1);
 }
@@ -96,6 +98,9 @@ t_point			*get_map(int fd)
 	t_point	*map;
 
 	parse_map(fd, &map);
-	connect_point(map);
+	if (!map->x)
+		connect_point(map);
+	else
+		handle_error("Error : File is empty");
 	return (map);
 }

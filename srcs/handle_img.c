@@ -6,7 +6,7 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/02 12:27:34 by mgonon            #+#    #+#             */
-/*   Updated: 2017/08/02 12:39:21 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/12 13:09:10 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,15 @@ static void		link_2points(t_param *params, t_point p1, t_point p2, int color)
 	int x;
 	int y;
 
-	x = abs(p2.x - p1.x);
-	y = abs(p2.y - p1.y);
+	x = labs(p2.x - p1.x);
+	y = labs(p2.y - p1.y);
 	params->sx = (p1.x < p2.x) ? 1 : -1;
 	params->sy = (p1.y < p2.y) ? 1 : -1;
 	params->counter = (x > y) ? (x / 2) : -(y / 2);
-	while (1)
+	while (p1.x != p2.x || p1.y != p2.y)
 	{
-		fill_pixel(p1.x, p1.y, color, params);
-		if (p1.x == p2.x && p1.y == p2.y)
-			break ;
+		if (p1.x > 0 && p1.x < WIDTH)
+			fill_pixel(p1.x, p1.y, color, params);
 		params->e = params->counter;
 		if (params->e > -x)
 		{
@@ -68,8 +67,8 @@ static void		link_2points(t_param *params, t_point p1, t_point p2, int color)
 
 static t_point	calculate_iso(t_param params, t_point point)
 {
-	int		x;
-	int		y;
+	long	x;
+	long	y;
 
 	x = WIDTH / 2 + point.x
 		* params.space * cos(params.deg) - point.y
@@ -85,25 +84,29 @@ static t_point	calculate_iso(t_param params, t_point point)
 static void		fill_image(t_param *params, t_point *map)
 {
 	t_point *first;
-	t_point	p1;
-	t_point	p2;
 
 	first = map;
-	while (map->down)
+	while (map)
 	{
-		while (map->right)
+		while (map)
 		{
-			p1 = calculate_iso(*params, *map);
-			p2 = calculate_iso(*params, *(map)->right);
-			if (map->right->right)
-				link_2points(params, p1, p2, params->color);
-			p2 = calculate_iso(*params, *(map)->down);
-			if (map->down->down)
-				link_2points(params, p1, p2, params->color);
+			params->p1 = calculate_iso(*params, *map);
+			if (params->p1.x > 0 && params->p1.x < WIDTH)
+				fill_pixel(params->p1.x, params->p1.y, params->color, params);
+			if (map->right)
+			{
+				params->p2 = calculate_iso(*params, *(map)->right);
+				link_2points(params, params->p1, params->p2, params->color);
+			}
+			if (map->down)
+			{
+				params->p2 = calculate_iso(*params, *(map)->down);
+				link_2points(params, params->p1, params->p2, params->color);
+			}
 			map = map->right;
 		}
-		map = first->down;
 		first = first->down;
+		map = first;
 	}
 }
 
@@ -117,4 +120,12 @@ void			handle_img(t_param *params)
 	params->img_ptr, &(params->bpp), &(params->size_line), &(params->endian));
 	fill_image(params, params->map);
 	mlx_put_image_to_window(params->mlx, params->win, params->img_ptr, 0, 0);
+	mlx_string_put(params->mlx, params->win, 10, 10, 0xFFFFFF,
+					"Q = Rotation");
+	mlx_string_put(params->mlx, params->win, 10, 30, 0xFFFFFF,
+					"W = Increase size");
+	mlx_string_put(params->mlx, params->win, 10, 50, 0xFFFFFF,
+					"S = Decrease size");
+	mlx_string_put(params->mlx, params->win, 10, 70, 0xFFFFFF,
+					"E = Change Color");
 }

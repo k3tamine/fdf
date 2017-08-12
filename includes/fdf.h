@@ -6,7 +6,7 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 02:07:16 by mgonon            #+#    #+#             */
-/*   Updated: 2017/08/02 12:58:06 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/09 16:14:01 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@
 
 typedef struct	s_point
 {
-	int				x;
-	int				y;
-	int				z;
+	long			x;
+	long			y;
+	long			z;
 	struct s_point	*right;
 	struct s_point	*down;
 }				t_point;
@@ -49,6 +49,8 @@ typedef struct	s_param
 	void			*img_ptr;
 	char			*img_str;
 	t_point			*map;
+	t_point			p1;
+	t_point			p2;
 	int				counter;
 	int				e;
 	int				sx;

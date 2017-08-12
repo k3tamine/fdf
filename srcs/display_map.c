@@ -6,7 +6,7 @@
 /*   By: mgonon <mgonon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/19 17:16:59 by mgonon            #+#    #+#             */
-/*   Updated: 2017/08/02 12:57:28 by mgonon           ###   ########.fr       */
+/*   Updated: 2017/08/09 16:23:41 by mgonon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,13 @@ static int	key_hook(int keycode, t_param *params)
 	else if (keycode == DOWN)
 		params->y_move += 10;
 	else if (keycode == E)
-		params->color += 30;
+		params->color += 8847592;
 	handle_img(params);
 	return (0);
 }
 
 int			display_map(t_point *map)
 {
-	void	*img_ptr;
 	t_param	params;
 
 	init_params(&params);
